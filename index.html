@@ -1,0 +1,406 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sukma — The Story That Stays</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+:root {
+  --bg:#11100f; --panel:#1b1918; --text:#f4eee6;
+  --muted:#aaa098; --gold:#c6a477; --rose:#bd8888;
+  --line:rgba(198,164,119,.24);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh}
+body:before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse at 10% 10%,#bd888814,transparent 40%),radial-gradient(ellipse at 90% 90%,#c6a47710,transparent 40%)}
+button,input{font:inherit}
+button{cursor:pointer}
+.serif,h1,h2,h3{font-family:'Cormorant Garamond',serif;font-weight:500}
+.gold{color:var(--gold)}
+.rose{color:var(--rose)}
+.muted{color:var(--muted)}
+.eyebrow{text-transform:uppercase;letter-spacing:4px;color:var(--gold);font-size:10px;margin-bottom:18px}
+h1{font-size:clamp(45px,7vw,82px);line-height:.98}
+h1 em{color:var(--gold);font-weight:400}
+h2{font-size:clamp(37px,5vw,58px);line-height:1.05}
+h3{font-size:28px}
+p{line-height:1.9}
+.subtitle{color:var(--muted);font-size:13px;line-height:1.95}
+
+/* HALAMAN LOGIN */
+#loginScreen{
+ position:fixed;inset:0;z-index:1000;display:flex;align-items:center;
+ justify-content:center;padding:22px;background:#11100f;
+ background-image:radial-gradient(ellipse at 50% 0%,#bd88881c,transparent 55%);
+}
+.login-card{width:min(420px,100%);border:1px solid var(--line);padding:42px 32px;background:#171514;text-align:center;box-shadow:0 25px 100px #0008}
+.login-heart{font-size:30px;color:var(--rose);margin-bottom:20px}
+.login-card h1{font-size:43px;margin-bottom:12px}
+.login-card .subtitle{margin-bottom:28px}
+.field{text-align:left;margin-bottom:17px}
+.field label{display:block;font-size:10px;letter-spacing:2px;color:var(--gold);margin-bottom:9px;text-transform:uppercase}
+.field input{width:100%;padding:14px;background:#100f0e;border:1px solid #39312a;color:var(--text);outline:none;border-radius:2px}
+.field input:focus{border-color:var(--gold)}
+.login-btn{width:100%;margin-top:8px}
+.login-error{font-size:12px;color:#e4a0a0;min-height:20px;margin-top:12px}
+.login-foot{font-size:10px;color:#766d65;margin-top:24px;letter-spacing:1px}
+
+/* NAVIGASI */
+header{height:76px;padding:0 6%;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:50;background:#11100fee;backdrop-filter:blur(16px)}
+.brand{font-family:'Cormorant Garamond',serif;font-size:27px;letter-spacing:2px}
+.brand span{color:var(--gold)}
+nav{display:flex;gap:5px;align-items:center}
+nav button{padding:10px 12px;background:transparent;color:var(--muted);border:1px solid transparent;border-radius:25px;font-size:11px;transition:.2s}
+nav button:hover,nav button.active{color:var(--gold);border-color:var(--line);background:#c6a4770b}
+main{width:min(1120px,88%);margin:auto;min-height:calc(100vh - 145px)}
+.page{display:none;padding:52px 0 45px;animation:fade .45s ease}
+.page.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.btn{padding:13px 19px;border:1px solid var(--gold);background:var(--gold);color:#171411;border-radius:2px;font-size:11px;letter-spacing:1px;transition:.25s}
+.btn:hover{background:transparent;color:var(--gold)}
+.btn.secondary{background:transparent;color:var(--text);border-color:var(--line)}
+.btn.secondary:hover{border-color:var(--gold);color:var(--gold)}
+.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:27px}
+.section-heading{display:flex;align-items:end;justify-content:space-between;gap:20px;margin-bottom:32px}
+.section-heading .subtitle{max-width:340px}
+
+/* BERANDA */
+.hero{min-height:67vh;display:grid;grid-template-columns:1fr .9fr;align-items:center;gap:55px}
+.hero-copy .subtitle{max-width:440px;margin-top:24px}
+.hero-photo{height:min(62vh,550px);min-height:330px;padding:10px;border:1px solid var(--line);position:relative}
+.hero-photo:after{content:"";position:absolute;inset:18px -12px -12px 18px;border:1px solid #bd888855;z-index:-1}
+.hero-photo img{width:100%;height:100%;object-fit:cover;display:block;filter:saturate(.85)}
+.caption{margin-top:20px;font-size:10px;letter-spacing:2px;color:var(--muted)}
+.caption span{color:var(--gold)}
+.quote-strip{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:24px 10px;text-align:center;font-family:'Cormorant Garamond',serif;font-size:25px;font-style:italic;color:#d8c8b5}
+
+/* CERITA */
+.story-grid{display:grid;grid-template-columns:1fr 1fr;gap:17px}
+.story-card{background:linear-gradient(145deg,#211e1c,#171615);border:1px solid var(--line);padding:27px}
+.story-card .number{font-size:10px;letter-spacing:3px;color:var(--gold);margin-bottom:17px}
+.story-card h3{margin-bottom:10px}
+.story-card p{font-size:13px;color:var(--muted)}
+.timeline{border-left:1px solid var(--line);margin:30px 0 0 8px;padding-left:27px}
+.timeline-item{position:relative;padding-bottom:27px}
+.timeline-item:before{content:"";position:absolute;left:-32px;top:5px;width:9px;height:9px;border-radius:50%;background:var(--gold)}
+.timeline-item .date{font-size:10px;letter-spacing:2px;color:var(--gold);margin-bottom:8px}
+.timeline-item p{font-size:13px;color:var(--muted);max-width:700px}
+
+/* GALERI */
+.gallery{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.photo{height:240px;overflow:hidden;border:1px solid var(--line);background:#211e1c;cursor:pointer;position:relative}
+.photo img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s,filter .4s;filter:saturate(.8)}
+.photo:hover img{transform:scale(1.06);filter:saturate(1.1)}
+.photo:after{content:"♡";position:absolute;right:12px;bottom:8px;color:white;font-size:22px;text-shadow:0 2px 12px #000}
+
+/* SURAT */
+.letter{max-width:760px;margin:auto;padding:clamp(25px,5vw,55px);border:1px solid var(--line);background:linear-gradient(145deg,#211e1c,#151413);position:relative}
+.letter:before{content:"";position:absolute;inset:8px;border:1px solid #c6a47716;pointer-events:none}
+.letter h2{margin-bottom:25px}
+.letter p{font-family:'Cormorant Garamond',serif;font-size:21px;line-height:1.8;color:#d8cec3;margin-bottom:19px}
+.signature{font-family:'Cormorant Garamond',serif;font-size:27px;color:var(--gold);font-style:italic;margin-top:28px}
+
+/* HARAPAN */
+.future{max-width:780px;margin:auto;text-align:center;padding:30px 10px}
+.big-quote{font-family:'Cormorant Garamond',serif;font-size:clamp(28px,4vw,44px);line-height:1.5;color:#e9ddd0;margin:30px 0}
+.heart-line{font-size:24px;letter-spacing:12px;color:var(--rose);margin:30px 0}
+footer{border-top:1px solid var(--line);text-align:center;padding:23px 10px;color:#80766c;font-size:10px;letter-spacing:1px}
+.lightbox{display:none;position:fixed;inset:0;z-index:200;background:#000e;align-items:center;justify-content:center;padding:20px}
+.lightbox.open{display:flex}
+.lightbox img{max-width:95%;max-height:85vh;object-fit:contain}
+.close-lightbox{position:absolute;right:25px;top:15px;background:none;border:none;color:white;font-size:35px}
+.logout{font-size:10px!important;color:#bd8888!important}
+
+@media(max-width:760px){
+ header{height:auto;min-height:70px;padding:13px 5%;align-items:flex-start;gap:12px;flex-direction:column}
+ nav{width:100%;overflow-x:auto;padding-bottom:3px}
+ nav button{white-space:nowrap;padding:9px 11px}
+ main{width:90%}
+ .page{padding:35px 0}
+ .hero{grid-template-columns:1fr;gap:30px;padding:10px 0}
+ .hero-photo{height:420px;min-height:0;grid-row:1}
+ .hero-copy{grid-row:2}
+ .story-grid{grid-template-columns:1fr}
+ .section-heading{display:block}
+ .section-heading .subtitle{margin-top:14px}
+ .gallery{grid-template-columns:repeat(2,1fr);gap:8px}
+ .photo{height:210px}
+ .letter p{font-size:19px}
+ .login-card{padding:35px 23px}
+}
+@media(max-width:390px){.photo{height:165px}.hero-photo{height:340px}}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="loginScreen">
+  <div class="login-card">
+    <div class="login-heart">♡</div>
+    <div class="eyebrow">A private little world</div>
+    <h1>Untuk <em class="gold">Sukma</em></h1>
+    <p class="subtitle">Beberapa kenangan tidak pernah benar-benar pergi. Masuklah untuk melihat cerita yang pernah ada.</p>
+    <form id="loginForm">
+      <div class="field">
+        <label for="username">Username</label>
+        <input id="username" autocomplete="username" placeholder="Masukkan username" required>
+      </div>
+      <div class="field">
+        <label for="password">Password</label>
+        <input id="password" type="password" autocomplete="current-password" placeholder="Masukkan password" required>
+      </div>
+      <button class="btn login-btn" type="submit">BUKA KENANGAN ↗</button>
+      <div id="loginError" class="login-error" aria-live="polite"></div>
+    </form>
+    <div class="login-foot">MADE WITH MEMORIES · NOT WITH GOODBYES</div>
+  </div>
+</div>
+
+<header>
+  <div class="brand">S<span>&</span>F.</div>
+  <nav>
+    <button class="active" data-page="home">Beranda</button>
+    <button data-page="story">Cerita Kita</button>
+    <button data-page="gallery">Galeri</button>
+    <button data-page="letter">Surat Kecil</button>
+    <button data-page="future">Suatu Hari</button>
+    <button class="logout" id="logoutBtn">Keluar ↗</button>
+  </nav>
+</header>
+
+<main>
+  <!-- BERANDA -->
+  <section class="page active" id="home">
+    <div class="hero">
+      <div class="hero-copy">
+        <div class="eyebrow">04 November 2024 · Sebuah cerita</div>
+        <h1>Some people<br>stay in our<br><em>hearts.</em></h1>
+        <p class="subtitle">Ada seseorang yang pernah membuat hari-hari biasa terasa istimewa. Namanya Sukma. Dan meski cerita kami tidak berjalan sampai akhir seperti yang pernah kubayangkan, kenangannya masih menjadi bagian dari diriku.</p>
+        <div class="actions">
+          <button class="btn" onclick="showPage('story')">JELAJAHI CERITA KITA</button>
+          <button class="btn secondary" onclick="showPage('letter')">SEBUAH SURAT ♡</button>
+        </div>
+        <div class="caption">SEBUAH CERITA YANG PERNAH NYATA <span>✦</span></div>
+      </div>
+      <div>
+        <div class="hero-photo">
+          <img src="foto/utama.jpeg" alt="Kenangan Firman dan Sukma" onerror="this.style.display='none';this.parentElement.style.background='#211e1c';this.parentElement.innerHTML+='<div style=&quot;padding:30px;color:#c6a477;text-align:center&quot;>Foto utama belum ditemukan.<br>Pastikan file bernama utama.jpeg ada di folder foto.</div>'">
+        </div>
+        <div class="caption">FIRMAN & SUKMA · <span>♡</span></div>
+      </div>
+    </div>
+    <div class="quote-strip">“Tidak semua yang berakhir harus dilupakan.”</div>
+  </section>
+
+  <!-- CERITA KITA -->
+  <section class="page" id="story">
+    <div class="section-heading">
+      <div><div class="eyebrow">Chapter one · Our story</div><h2>Cerita yang<br><span class="gold">pernah kita punya.</span></h2></div>
+      <p class="subtitle">Ada awal yang indah, hari-hari yang berarti, dan akhir yang tidak pernah benar-benar kita rencanakan.</p>
+    </div>
+    <div class="story-grid">
+      <div class="story-card">
+        <div class="number">01 — THE BEGINNING</div>
+        <h3>4 November 2024</h3>
+        <p>Hari ketika kita memulai sebuah cerita. Aku tidak tahu sejauh apa perjalanan ini akan membawa kita, tetapi saat itu aku bahagia karena bisa menyebutmu seseorang yang istimewa.</p>
+      </div>
+      <div class="story-card">
+        <div class="number">02 — THE LITTLE THINGS</div>
+        <h3>Hari-hari bersama</h3>
+        <p>Dari hal sederhana, tawa kecil, foto-foto, sampai momen yang mungkin terlihat biasa bagi orang lain. Bagiku, semua itu menjadi bagian dari kenangan yang berharga.</p>
+      </div>
+      <div class="story-card">
+        <div class="number">03 — THE LESSON</div>
+        <h3>Aku dan kesalahanku</h3>
+        <p>Aku sadar, cinta saja tidak cukup kalau sikapku justru melukai orang yang kusayangi. Ego dan caraku bersikap adalah hal yang harus kuakui dan pelajari, bukan sekadar kusesali.</p>
+      </div>
+      <div class="story-card">
+        <div class="number">04 — THE GOODBYE</div>
+        <h3>April 2026</h3>
+        <p>Kita berpisah pada bulan April. Aku tidak ingin mengarang tanggal atau mengubah cerita yang sebenarnya. Yang kutahu, setelah itu aku harus belajar menjalani hari tanpa kehadiranmu.</p>
+      </div>
+    </div>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="date">04 NOVEMBER 2024</div>
+        <h3>Awal dari kita</h3>
+        <p>Satu tanggal yang akan selalu mengingatkanku bahwa kita pernah saling memilih.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="date">APRIL 2026</div>
+        <h3>Ketika jalan kita berpisah</h3>
+        <p>Ada hal yang tidak bisa kuperbaiki hanya dengan kata maaf. Aku belajar bahwa menyayangi seseorang juga berarti berani melihat kekurangan diri sendiri.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="date">SETELAH PERPISAHAN</div>
+        <h3>Belajar menunggu, belajar berubah</h3>
+        <p>Aku belum membuka hati untuk hubungan baru. Sebagian diriku masih berharap, tetapi aku juga ingin belajar menjadi pribadi yang lebih baik, bukan hanya menunggu waktu berlalu.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALERI -->
+  <section class="page" id="gallery">
+    <div class="section-heading">
+      <div><div class="eyebrow">Chapter two · Little moments</div><h2>Hal-hal kecil,<br><span class="gold">kenangan besar.</span></h2></div>
+      <p class="subtitle">Setiap foto menyimpan potongan cerita yang tidak bisa diulang, tetapi masih bisa dikenang.</p>
+    </div>
+    <div class="gallery" id="galleryGrid"></div>
+    <p class="subtitle" style="margin-top:20px">Klik foto untuk melihatnya lebih besar. Foto yang tidak ditemukan otomatis dilewati.</p>
+  </section>
+
+  <!-- SURAT -->
+  <section class="page" id="letter">
+    <div class="eyebrow" style="text-align:center">Chapter three · An unsent letter</div>
+    <div class="letter">
+      <h2>Untuk Sukma,<br><em class="gold">yang pernah menjadi rumah.</em></h2>
+      <p>Hai, Sukma.</p>
+      <p>Aku tidak tahu apakah suatu hari kamu akan membaca tulisan ini. Aku juga tidak tahu apakah namaku masih sesekali melintas di pikiranmu. Aku menulis ini bukan untuk membuatmu merasa bersalah, bukan untuk meminta kamu mengubah keputusanmu, melainkan untuk mengatakan sesuatu yang mungkin dulu belum mampu kusampaikan dengan baik.</p>
+      <p>Terima kasih karena pernah hadir dalam hidupku. Terima kasih untuk waktu, perhatian, tawa, dan hal-hal sederhana yang ternyata begitu berarti setelah semuanya tidak lagi sama.</p>
+      <p>Ada banyak hal yang sekarang kupikirkan kembali. Aku sadar aku pernah terlalu mengikuti egoku sendiri. Mungkin ada saat ketika aku lebih sibuk mempertahankan diriku daripada memahami perasaanmu. Aku menyesal karena orang yang ingin kujaga justru pernah merasakan sakit dari sikapku.</p>
+      <p>Maaf, Sukma. Maaf untuk sikapku yang belum dewasa, untuk hal-hal yang seharusnya bisa kuhadapi dengan lebih tenang, dan untuk saat-saat ketika aku tidak menjadi pasangan seperti yang kamu butuhkan. Aku tahu kata maaf tidak otomatis menghapus luka. Aku juga tahu perubahan seharusnya dibuktikan melalui sikap, bukan hanya janji.</p>
+      <p>Sejak kita berpisah pada April 2026, aku belum menjalin hubungan dengan siapa pun. Waktu berjalan, hari berganti, dan hampir setahun rasanya aku masih menyimpan harapan yang sama. Bukan karena aku ingin mengikatmu dengan penantianku, tetapi karena sampai hari ini hatiku belum benar-benar siap memulai cerita baru.</p>
+      <p>Aku tidak tahu apakah menunggu ini akan membawaku pada pertemuan kembali atau justru mengajarkanku menerima sesuatu yang tidak bisa kupaksakan. Yang sedang kucoba lakukan adalah memperbaiki diriku sendiri. Aku ingin menjadi lebih baik, bukan sekadar supaya kamu kembali, tetapi karena aku akhirnya mengerti bahwa seseorang yang kita sayangi pantas menerima sikap yang lebih baik dari kita.</p>
+      <p>Kalau suatu hari kamu bahagia di jalan yang berbeda, aku tidak ingin kenangan kita berubah menjadi alasan untuk mengganggu kedamaianmu. Aku hanya berharap kamu selalu diperlakukan dengan baik, dihargai, dan menemukan kebahagiaan yang kamu butuhkan.</p>
+      <p>Namun, jika suatu hari kehidupan memberi kita kesempatan untuk berbicara lagi, aku berharap kita bisa bertemu sebagai dua orang yang sudah belajar dari masa lalu. Tidak harus mengulang semuanya seperti dulu. Cukup dengan hati yang lebih dewasa, kejujuran, dan kemauan untuk saling memahami.</p>
+      <p>Aku tidak meminta jawaban. Aku tidak menuntut kesempatan kedua. Aku hanya ingin kamu tahu bahwa hubungan kita pernah sangat berarti bagiku, dan bahwa aku menyesali bagian diriku yang ikut membuatnya berakhir.</p>
+      <p>Jaga dirimu baik-baik, ya, Sukma. Semoga hari-harimu dipenuhi hal-hal baik. Terima kasih telah menjadi bagian dari hidupku yang tidak akan pernah kuanggap sia-sia.</p>
+      <p>Jika takdir suatu hari mempertemukan kita kembali, semoga saat itu aku sudah menjadi seseorang yang lebih mampu memahami, menghargai, dan menyayangi dengan cara yang benar.</p>
+      <div class="signature">— Firman</div>
+    </div>
+  </section>
+
+  <!-- SUATU HARI -->
+  <section class="page" id="future">
+    <div class="future">
+      <div class="eyebrow">The final chapter · Maybe someday</div>
+      <h2>Jika suatu hari<br><em class="gold">kita bertemu lagi.</em></h2>
+      <div class="heart-line">♡ &nbsp; ✦ &nbsp; ♡</div>
+      <p class="big-quote">“Aku tidak bisa meminta waktu kembali. Aku hanya bisa belajar dari apa yang telah terjadi, lalu menyerahkan hal-hal yang tidak bisa kupastikan kepada kehidupan.”</p>
+      <p class="subtitle">Tanggal 4 November mungkin akan datang lagi. Kalau kita masih bersama, hari itu seharusnya menjadi perayaan dua tahun kita. Kali ini, tanggal itu menjadi pengingat bahwa pernah ada seseorang yang begitu berarti, dan bahwa aku masih punya banyak hal untuk kupelajari tentang cinta.</p>
+      <p class="subtitle" style="margin-top:18px">Aku masih menyimpan harapan kecil. Tapi harapan itu bukan kewajiban untukmu. Kamu tetap berhak menentukan jalanmu sendiri, dan aku akan berusaha menghormatinya.</p>
+      <div style="margin-top:32px"><button class="btn secondary" onclick="showPage('home')">KEMBALI KE AWAL ↗</button></div>
+    </div>
+  </section>
+</main>
+
+<footer>SEBUAH CERITA YANG PERNAH NYATA · 04 NOVEMBER 2024 — SELALU MENJADI KENANGAN</footer>
+
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="close-lightbox" aria-label="Tutup" onclick="closeLightbox()">×</button>
+  <img id="lightboxImage" src="" alt="Foto kenangan" onclick="event.stopPropagation()">
+</div>
+
+<script>
+/* LOGIN SEDERHANA — BUKAN SISTEM KEAMANAN KUAT */
+const USERNAME = "Sukmazendato.id";
+const PASSWORD = "Firman04112024";
+
+const loginScreen = document.getElementById("loginScreen");
+
+document.getElementById("loginForm").addEventListener("submit", function(e) {
+  e.preventDefault();
+  const user = document.getElementById("username").value.trim();
+  const pass = document.getElementById("password").value;
+  const error = document.getElementById("loginError");
+
+  if (user === USERNAME && pass === PASSWORD) {
+    loginScreen.style.display = "none";
+    document.getElementById("loginError").textContent = "";
+  } else {
+    error.textContent = "Username atau password salah. Coba lagi, ya.";
+    document.getElementById("password").value = "";
+  }
+});
+
+document.getElementById("logoutBtn").addEventListener("click", function() {
+  loginScreen.style.display = "flex";
+  document.getElementById("username").value = "";
+  document.getElementById("password").value = "";
+  document.getElementById("loginError").textContent = "";
+});
+
+function showPage(pageId) {
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+  document.querySelectorAll("nav button[data-page]").forEach(b => b.classList.remove("active"));
+  document.getElementById(pageId).classList.add("active");
+  const navButton = document.querySelector('nav button[data-page="' + pageId + '"]');
+  if (navButton) navButton.classList.add("active");
+  window.scrollTo({top: 0, behavior: "smooth"});
+}
+
+document.querySelectorAll("nav button[data-page]").forEach(button => {
+  button.addEventListener("click", () => showPage(button.dataset.page));
+});
+
+/* FOTO-FOTO DARI FOLDER FOTO */
+const photos = [
+"utama.jpeg",
+"WhatsApp Image 2026-10-28 at 15.50.58.jpeg",
+"WhatsApp Image 2026-10-28 at 15.49.06.jpeg",
+"WhatsApp Image 2026-10-28 at 15.50.40.jpeg",
+"WhatsApp Image 2026-10-28 at 15.50.41 (1).jpeg",
+"WhatsApp Image 2026-10-28 at 15.50.41 (2).jpeg",
+"WhatsApp Image 2026-10-28 at 15.50.41.jpeg",
+"WhatsApp Image 2026-10-28 at 15.50.42 (1).jpeg",
+"WhatsApp Image 2026-10-28 at 15.50.43.jpeg",
+"WhatsApp Image 2026-10-28 at 15.50.44.jpeg",
+"WhatsApp Image 2026-10-28 at 15.50.46 (1).jpeg",
+"WhatsApp Image 2026-10-28 at 15.50.46.jpeg",
+"WhatsApp Image 2026-10-28 at 15.50.47 (1).jpeg",
+"WhatsApp Image 2026-10-28 at 15.50.47.jpeg",
+"WhatsApp Image 2026-10-28 at 15.50.48 (1).jpeg",
+"WhatsApp Image 2026-10-28 at 15.50.48.jpeg",
+"WhatsApp Image 2026-10-28 at 15.50.50.jpeg",
+"WhatsApp Image 2026-10-28 at 15.50.51 (1).jpeg",
+"WhatsApp Image 2026-10-28 at 15.50.51.jpeg",
+"WhatsApp Image 2026-10-28 at 15.50.52 (1).jpeg",
+"WhatsApp Image 2026-10-28 at 15.50.52.jpeg",
+"WhatsApp Image 2026-10-28 at 15.50.53.jpeg",
+"WhatsApp Image 2026-10-28 at 15.50.54 (1).jpeg",
+"WhatsApp Image 2026-10-28 at 15.50.54 (2).jpeg",
+"WhatsApp Image 2026-10-28 at 15.50.54 (3).jpeg",
+"WhatsApp Image 2026-10-28 at 15.50.54.jpeg",
+"WhatsApp Image 2026-10-28 at 15.50.55 (1).jpeg",
+"WhatsApp Image 2026-10-28 at 15.50.55.jpeg",
+"WhatsApp Image 2026-10-28 at 15.50.56 (1).jpeg",
+"WhatsApp Image 2026-10-28 at 15.50.56.jpeg",
+"WhatsApp Image 2026-10-28 at 15.50.57 (1).jpeg",
+"WhatsApp Image 2026-10-28 at 15.50.57.jpeg"
+];
+
+const grid = document.getElementById("galleryGrid");
+
+photos.forEach(filename => {
+  const img = document.createElement("img");
+  img.src = "foto/" + filename;
+  img.alt = "Kenangan Firman dan Sukma";
+  img.loading = "lazy";
+
+  const card = document.createElement("div");
+  card.className = "photo";
+  card.appendChild(img);
+
+  img.onerror = () => card.remove();
+  card.addEventListener("click", () => {
+    document.getElementById("lightboxImage").src = img.src;
+    document.getElementById("lightbox").classList.add("open");
+  });
+
+  grid.appendChild(card);
+});
+
+function closeLightbox() {
+  document.getElementById("lightbox").classList.remove("open");
+  document.getElementById("lightboxImage").src = "";
+}
+
+document.addEventListener("keydown", function(e) {
+  if (e.key === "Escape") closeLightbox();
+});
+</script>
+</body>
+</html>
